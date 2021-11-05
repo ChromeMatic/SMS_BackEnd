@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 @Table
 @Entity(name = "student")
@@ -25,9 +25,11 @@ public class Student {
     @ManyToOne
     private  School school;
     @OneToMany
-    private Collection<StudentGrades> gradesSet = new ArrayList<>();
+    private List<StudentGrades> gradesSet = new ArrayList<>();
     @OneToMany
-    private Collection<Course> courses = new ArrayList<>();
+    private List<Course> courses = new ArrayList<>();
     @OneToMany
-    private  Collection<StudentContactInfo> info = new ArrayList<>();
+    private List<StudentReport> studentReports = new ArrayList<>();
+    @OneToMany
+    private  List<StudentContactInfo> info = new ArrayList<>();
 }

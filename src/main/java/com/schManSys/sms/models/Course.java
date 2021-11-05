@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 @Table
 @Entity(name = "course")
@@ -23,5 +23,5 @@ public class Course {
     private String teacherName;
     private String timeAndDate;
     @OneToMany
-    private Collection<CourseResources> courseResources = new ArrayList<>();
+    private List<CourseResources> courseResources = new ArrayList<>();
 }

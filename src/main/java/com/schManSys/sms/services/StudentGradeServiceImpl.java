@@ -6,10 +6,11 @@ import com.schManSys.sms.repository.StudentGradesRepository;
 import com.schManSys.sms.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import static java.util.Objects.isNull;
 import javax.transaction.Transactional;
-import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional
@@ -41,19 +42,45 @@ public class StudentGradeServiceImpl implements StudentGradeService{
 
     @Override
     public StudentGrades FindById(Long studentGradeId) {
-        return studentGradesRepository.findByStudentGradeId(studentGradeId);
+
+        StudentGrades grades = studentGradesRepository.findByStudentGradeId(studentGradeId);
+
+        if(grades == null){
+            log.error("Student grade not found in DB");
+            throw new UsernameNotFoundException("Student grade not found in DB");
+        }else{
+            log.info("Student Grades found");
+        }
+
+        return grades;
     }
 
     @Override
-    public Collection<StudentGrades> FindStudentGradeByStudentName(String studentName) {
+    public List<StudentGrades> FindByStudentId(Long studentId) {
+
+        Student student = studentRepository.findByStudentId(studentId);
+
+        if(student == null){
+            log.error("Student not found in DB");
+            throw new UsernameNotFoundException("Student not found in DB");
+        }else{log.info("Student Found! ");}
+
+        List<StudentGrades> gradesList = student.getGradesSet();
+
+        return gradesList;
+    }
+
+    @Override
+    public List<StudentGrades> FindStudentGradeByStudentName(String studentName) {
 
         Student student = studentRepository.findByStudentName(studentName);
 
         if(isNull(student)){
           log.info("Student named: {}, does not exist.",studentName);
+            throw new UsernameNotFoundException("Student not found in DB");
         }
 
-        Collection<StudentGrades> grades = student.getGradesSet();
+        List<StudentGrades> grades = student.getGradesSet();
 
         return grades;
     }
