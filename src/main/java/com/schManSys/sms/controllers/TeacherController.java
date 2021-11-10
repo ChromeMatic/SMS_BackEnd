@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("api/v1/teacher")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin
 public class TeacherController {
 
     private final TeacherService teacherService;
