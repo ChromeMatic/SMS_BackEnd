@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Table
@@ -19,7 +20,6 @@ public class Student {
     private Long studentId;
     private String studentName;
     private String dob;
-    private Long studentGradeId;
     @OneToOne
     private AppUser appUser;
     @ManyToOne
@@ -27,7 +27,7 @@ public class Student {
     @OneToMany
     private List<StudentGrades> gradesSet = new ArrayList<>();
     @OneToMany
-    private List<Course> courses = new ArrayList<>();
+    private Collection<Course> courses = new ArrayList<>();
     @OneToMany
     private List<StudentReport> studentReports = new ArrayList<>();
     @OneToMany

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Table
@@ -18,10 +19,8 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long courseId;
     private String courseName;
-    @OneToOne
-    private Subject subject;
     private String teacherName;
     private String timeAndDate;
     @OneToMany
-    private List<CourseResources> courseResources = new ArrayList<>();
+    private Collection<CourseResources> courseResources = new ArrayList<>();
 }

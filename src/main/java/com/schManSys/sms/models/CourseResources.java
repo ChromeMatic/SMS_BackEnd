@@ -16,4 +16,5 @@ public class CourseResources {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long courseResourceId;
+    private String courseName;
 }

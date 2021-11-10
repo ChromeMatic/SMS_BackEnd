@@ -4,10 +4,10 @@ import com.schManSys.sms.models.Course;
 import com.schManSys.sms.models.CourseResources;
 import com.schManSys.sms.models.Student;
 import com.schManSys.sms.models.StudentReport;
+import com.schManSys.sms.repository.CourseRepository;
 import com.schManSys.sms.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,23 +20,38 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService{
 
     private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
 
     @Override
     public Student AddNewStudent(Student student) {
+
+       try{
+           if (student == null){
+               log.error("Error");
+           }else{
+               log.info("Object is full");
+           }
+       }catch (Error error){
+           log.error("Object is empty :",error);
+       }
+
         return studentRepository.save(student);
     }
 
     @Override
     public Student FindStudentById(Long studentId) {
 
-        Student student = studentRepository.findByStudentId(studentId);
+       Student student = studentRepository.findByStudentId(studentId);
 
-        if( student == null){
-            log.error("Student not found in DB");
-            throw new UsernameNotFoundException("Student not found in DB");
-        }else {
-            log.info("Student named: {} found in DB",student.getStudentName());
-        }
+       try {
+           if( student == null){
+               log.error("Student not found in DB");
+           }else {
+               log.info("Student named: {} found in DB",student.getStudentName());
+           }
+       }catch (Error error){
+           log.error("Student object is empty.");
+       }
 
         return student;
     }
@@ -47,19 +62,44 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    public Course AddNewCourse(Course course) {
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public void AddCourseToStudent(Long studentId,Course course) {
+
+        Student student = studentRepository.findByStudentId(studentId);
+
+        try {
+
+            if (student != null){
+                student.getCourses().add(course);
+            }
+
+        }catch (Error error){
+            log.error("Could not find student",error);
+        }
+
+    }
+
+    @Override
     public List<Course> getStudentCourses(Long studentId) {
 
         Student student = studentRepository.findByStudentId(studentId);
 
-        //Check If student exist
-        if(student == null){
-            log.error("Student not found in DB");
-            throw new UsernameNotFoundException("Student not found in DB");
-        }else{
-            log.info("Student named: {} found in DB",student.getStudentName());
+        try{
+            //Check If student exist
+            if(student.getCourses() == null){
+                log.error("Student not found in DB");
+            }else{
+                log.info("Student named: {} found in DB",student.getStudentName());
+            }
+        }catch (Error error){
+            log.error("Student not founded in DB :",error);
         }
 
-        return student.getCourses();
+        return (List<Course>) student.getCourses();
     }
 
     @Override
