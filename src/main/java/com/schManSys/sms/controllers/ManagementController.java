@@ -35,7 +35,13 @@ public class ManagementController {
 
    @GetMapping("/student/{studentID}")
    public ResponseEntity<Student>getStudentByID(@PathVariable(value = "studentID")Long studentID){
-        return ResponseEntity.ok().body(studentService.FindStudentById(studentID));
+
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("")
+                .toUriString());
+
+        return ResponseEntity.created(uri).body(studentService.FindStudentById(studentID));
    }
 
     @GetMapping("/user/{userId}")
