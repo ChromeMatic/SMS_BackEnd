@@ -1,7 +1,12 @@
 package com.schManSys.sms.services;
 
 import com.schManSys.sms.models.School;
+import com.schManSys.sms.models.Student;
+import com.schManSys.sms.models.Teacher;
 import com.schManSys.sms.repository.SchoolRepository;
+import com.schManSys.sms.repository.StudentRepository;
+import com.schManSys.sms.repository.TeacherRepository;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +20,8 @@ import java.util.List;
 public class SchoolServiceImpl implements SchoolService{
 
     private final SchoolRepository schoolRepository;
+    private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
 
     @Override
     public School AddNewSchool(School school) {
@@ -38,8 +45,33 @@ public class SchoolServiceImpl implements SchoolService{
     }
 
     @Override
-    public School EditSchoolByName(School schoolName, School school) {
-        return null;
+    public void EditSchoolByName(School schoolName, School school) {
+
+    }
+
+    @Override
+    public School AddNewStudents(Long studentId,String schoolName) {
+
+        Student student1 = studentRepository.findByStudentId(studentId);
+        School school = schoolRepository.findBySchoolName(schoolName);
+
+        try {
+            if(student1 != null || school != null){
+               log.info("Student and School exist");
+               school.getStudents().add(student1);
+            }else {
+                throw new NullPointerException();
+            }
+        }catch (Error error){
+           log.error("Student dos not exist :",error);
+        }
+
+        return school;
+    }
+
+    @Override
+    public void AddNewTeacher(Teacher teacher) {
+
     }
 
     @Override

@@ -22,8 +22,6 @@ public class Student {
     private String dob;
     @OneToOne
     private AppUser appUser;
-    @ManyToOne
-    private  School school;
     @OneToMany
     private List<StudentGrades> gradesSet = new ArrayList<>();
     @OneToMany
