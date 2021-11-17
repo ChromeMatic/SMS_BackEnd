@@ -33,12 +33,22 @@ public class ManagementController {
         return ResponseEntity.ok().body(userService.getUser());
     }
 
+    @GetMapping("/students")
+    public ResponseEntity<List<Student>> getStudents(){
+        return ResponseEntity.ok().body(studentService.getStudents());
+    }
+
+    @GetMapping("/schools")
+    public ResponseEntity<List<School>> getSchools(){
+        return ResponseEntity.ok().body(schoolService.getSchools());
+    }
+
    @GetMapping("/student/{studentID}")
    public ResponseEntity<Student>getStudentByID(@PathVariable(value = "studentID")Long studentID){
 
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("")
+                .path("api/v1/management/student")
                 .toUriString());
 
         return ResponseEntity.created(uri).body(studentService.FindStudentById(studentID));
