@@ -58,7 +58,7 @@ public class CourseServiceImpl implements  CourseService{
     }
 
     @Override
-    public void EditCourse(Long courseId, Course course) {
+    public Course EditCourse(Long courseId, Course course) {
 
         Course course2 = courseRepository.findByCourseId(courseId);
 
@@ -75,6 +75,7 @@ public class CourseServiceImpl implements  CourseService{
             log.error("Course not founded in DB",error);
         }
 
+        return course;
     }
 
     @Override

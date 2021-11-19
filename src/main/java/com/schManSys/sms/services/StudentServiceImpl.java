@@ -67,19 +67,22 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public void AddCourseToStudent(Long studentId,Course course) {
+    public Student AddCourseToStudent(Long studentId,String course) {
 
         Student student = studentRepository.findByStudentId(studentId);
+        Course course1 = courseRepository.findByCourseName(course);
 
         try {
 
-            if (student != null){
-                student.getCourses().add(course);
+            if (student != null && course1 !=null){
+                student.getCourses().add(course1);
             }
 
         }catch (Error error){
-            log.error("Could not find student",error);
+            log.error("Could not find student or course name. ",error);
         }
+
+        return student;
 
     }
 

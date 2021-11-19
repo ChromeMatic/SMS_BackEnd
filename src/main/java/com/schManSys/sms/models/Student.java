@@ -21,7 +21,7 @@ public class Student {
     private String studentName;
     private String dob;
     @OneToOne
-    private AppUser appUser;
+    private AppUser appUser = new AppUser();
     @OneToMany
     private List<StudentGrades> gradesSet = new ArrayList<>();
     @OneToMany

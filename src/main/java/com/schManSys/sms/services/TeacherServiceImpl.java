@@ -1,5 +1,6 @@
 package com.schManSys.sms.services;
 
+import com.schManSys.sms.models.Course;
 import com.schManSys.sms.models.Teacher;
 import com.schManSys.sms.repository.StudentGradesRepository;
 import com.schManSys.sms.repository.StudentRepository;
@@ -19,11 +20,20 @@ import java.util.List;
 public class TeacherServiceImpl implements TeacherService{
 
     private final TeacherRepository teacherRepository;
-    private final StudentRepository studentRepository;
-    private final StudentGradesRepository studentGradesRepository;
+    // private final StudentRepository studentRepository;
+    //private final StudentGradesRepository studentGradesRepository;
 
     @Override
     public Teacher SaveNewTeacher(Teacher teacher) {
+
+        try {
+            if(teacher == null){
+                throw new NullPointerException();
+            }else{log.info("Object is not empty.");}
+        }catch (Error error){
+            log.error("Object is empty :",error);
+        }
+
         return teacherRepository.save(teacher);
     }
 
@@ -35,6 +45,11 @@ public class TeacherServiceImpl implements TeacherService{
     @Override
     public Teacher getTeacherByName(String teacherName) {
         return teacherRepository.findByTeacherName(teacherName);
+    }
+
+    @Override
+    public Course getCourses() {
+        return null;
     }
 
     @Override

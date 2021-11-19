@@ -1,6 +1,7 @@
 package com.schManSys.sms.controllers;
 
 import com.schManSys.sms.models.*;
+import com.schManSys.sms.services.CourseService;
 import com.schManSys.sms.services.SchoolService;
 import com.schManSys.sms.services.StudentService;
 import com.schManSys.sms.services.UserService;
@@ -24,6 +25,7 @@ public class ManagementController {
     private final UserService userService;
     private final StudentService studentService;
     private final SchoolService schoolService;
+    private final CourseService courseService;
 
     // hasRole('ROLE'), hasAnyRole('ROLE'), hasAuthority('permission')
     // hasAuthority('permission) @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -60,6 +62,11 @@ public class ManagementController {
         return ResponseEntity.ok().body(user);
     }
 
+    @GetMapping("/school/{schoolId}")
+    public ResponseEntity<School> GetSchoolById(@PathVariable(value = "schoolId")Long schoolId){
+        return ResponseEntity.ok().body(schoolService.FindSchoolById(schoolId));
+    }
+
     @PostMapping("/user/save")
     public ResponseEntity<AppUser>SaveUser(@RequestBody AppUser user){
         URI uri = URI.create(ServletUriComponentsBuilder
@@ -78,12 +85,6 @@ public class ManagementController {
         return ResponseEntity.created(uri).body(userService.AddNewRole(roles));
     }
 
-    @PutMapping("/role/AddToUser")
-    public ResponseEntity<?> AddRoleToUser(@RequestBody UserForm form){
-        userService.AddRoleToUser(form.getUsername(), form.getRoleName());
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/teacher/save")
     public ResponseEntity<Teacher> AddNewTeacher(){
         return null;
@@ -100,10 +101,6 @@ public class ManagementController {
         return ResponseEntity.created(uri).body(studentService.AddNewStudent(student));
     }
 
-    @GetMapping("/school/{schoolId}")
-    public ResponseEntity<School> GetSchoolById(@PathVariable(value = "schoolId")Long schoolId){
-        return ResponseEntity.ok().body(schoolService.FindSchoolById(schoolId));
-    }
 
     @PostMapping("/school")
     public ResponseEntity<School> SaveSchool(@RequestBody School school){
@@ -116,6 +113,18 @@ public class ManagementController {
         return ResponseEntity.created(uri).body(schoolService.AddNewSchool(school));
     }
 
+
+    @PostMapping("/AddCourse")
+    public ResponseEntity<Course> SaveNewCourse(@RequestBody Course course){
+        return ResponseEntity.ok().body(courseService.AddNewCourse(course));
+    }
+
+    @PutMapping("/role/AddToUser")
+    public ResponseEntity<?> AddRoleToUser(@RequestBody UserForm form){
+        userService.AddRoleToUser(form.getUsername(), form.getRoleName());
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/school/AddStudent/{school}/{studentID}")
     public ResponseEntity<School> SaveStudentToSchool(@PathVariable(value = "school") String school,
                                                       @PathVariable(value = "studentID") Long studentID ){
@@ -126,6 +135,23 @@ public class ManagementController {
                 .toUriString());
 
         return ResponseEntity.created(uri).body(schoolService.AddNewStudents(studentID,school));
+    }
+
+    @PutMapping("/student/AddCourse/{studentID}/{course}")
+    public ResponseEntity<Student> GetCourseToStudent(@PathVariable(value = "studentID") Long studentID,
+                                                      @PathVariable(value = "course") String course ){
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("api/v1/management/student/AddCourse")
+                .toUriString());
+
+        return ResponseEntity.created(uri).body(studentService.AddCourseToStudent(studentID,course));
+    }
+
+    @PutMapping("/EditCourse/{courseId}")
+    public ResponseEntity<Course> edit(@PathVariable(value = "courseId") Long courseId, @RequestBody Course course){
+
+        return ResponseEntity.ok().body(courseService.EditCourse(courseId,course));
     }
 }
 

@@ -10,6 +10,6 @@ public interface CourseService {
     Course AddNewCourse(Course course);
     Course FindCourseById(Long courseId) throws NotFoundException;
     Course FindCourseByName(String course) throws NotFoundException;
-    void EditCourse(Long courseId,Course course);
+    Course EditCourse(Long courseId,Course course);
     List<Course> getAllCourse();
 }
