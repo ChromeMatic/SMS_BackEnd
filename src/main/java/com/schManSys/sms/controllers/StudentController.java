@@ -1,8 +1,8 @@
 package com.schManSys.sms.controllers;
 
-import com.schManSys.sms.models.Course;
-import com.schManSys.sms.models.Student;
-import com.schManSys.sms.models.StudentGrades;
+import com.schManSys.sms.models.*;
+import com.schManSys.sms.services.AssignmentService;
+import com.schManSys.sms.services.ClassSessionService;
 import com.schManSys.sms.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,8 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
+    private final ClassSessionService classSessionService;
+    private final AssignmentService assignmentService;
 
     @GetMapping("/courses/{studentId}")
     public ResponseEntity<Collection<Course>> getStudentCourses(@PathVariable(value = "studentId") Long studentId){
@@ -63,6 +65,16 @@ public class StudentController {
         }
 
         return ResponseEntity.ok().body(student);
+    }
+
+    @GetMapping("/student/classes")
+    public ResponseEntity<List<ClassSession>> getClassSession(){
+        return ResponseEntity.ok().body(classSessionService.getAllClassSessions());
+    }
+
+    @GetMapping("/student/Assignments")
+    public ResponseEntity<List<Assignment>> getAssignments(){
+        return ResponseEntity.ok().body(assignmentService.getAssignments());
     }
 
 }

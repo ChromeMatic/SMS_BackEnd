@@ -1,11 +1,10 @@
 package com.schManSys.sms.controllers;
 
+import com.schManSys.sms.models.ClassSession;
 import com.schManSys.sms.models.Course;
 import com.schManSys.sms.models.Student;
 import com.schManSys.sms.models.Teacher;
-import com.schManSys.sms.services.CourseService;
-import com.schManSys.sms.services.StudentService;
-import com.schManSys.sms.services.TeacherService;
+import com.schManSys.sms.services.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +22,8 @@ public class TeacherController {
     private final TeacherService teacherService;
     private final StudentService studentService;
     private final CourseService  courseService;
+    private final AssignmentService assignmentService;
+    private final ClassSessionService classSessionService;
 
     @GetMapping("/")
     public List<Teacher> getTeachers(){
@@ -79,4 +80,6 @@ public class TeacherController {
 
         return null;
     }
+
+
 }
