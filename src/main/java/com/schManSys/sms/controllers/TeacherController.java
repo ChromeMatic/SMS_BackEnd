@@ -1,6 +1,5 @@
 package com.schManSys.sms.controllers;
 
-import com.schManSys.sms.models.ClassSession;
 import com.schManSys.sms.models.Course;
 import com.schManSys.sms.models.Student;
 import com.schManSys.sms.models.Teacher;
@@ -75,11 +74,13 @@ public class TeacherController {
         return ResponseEntity.ok().body(studentService.getStudents());
     }
 
-    @PostMapping("/EditReport/{studentId}")
-    public ResponseEntity<Student> editStudentReport(@PathVariable(value = "studentId") Long studentId){
+    /*
+        @PostMapping("/EditReport/{studentId}")
+        public ResponseEntity<Student> editStudentReport(@PathVariable(value = "studentId") Long studentId){
 
-        return null;
-    }
+            return null;
+        }
+    */
 
 
 }
