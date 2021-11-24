@@ -74,13 +74,11 @@ public class TeacherController {
         return ResponseEntity.ok().body(studentService.getStudents());
     }
 
-    /*
-        @PostMapping("/EditReport/{studentId}")
-        public ResponseEntity<Student> editStudentReport(@PathVariable(value = "studentId") Long studentId){
 
-            return null;
-        }
-    */
+    @PostMapping("/EditReport/{studentId}")
+    public ResponseEntity<Student> editStudentReport(@PathVariable(value = "studentId") Long studentId){
+          return null;
+     }
 
 
 }

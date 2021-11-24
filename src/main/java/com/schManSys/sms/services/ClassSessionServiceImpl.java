@@ -19,17 +19,49 @@ public class ClassSessionServiceImpl implements ClassSessionService{
 
     @Override
     public ClassSession FindClassSessionById(Long classSessionId) {
-        return classSessionRepository.findByClassSessionId(classSessionId);
+
+        ClassSession classSession = classSessionRepository.findByClassSessionId(classSessionId);
+
+        try{
+            if(classSession == null){
+                log.info("Object not found");
+            }
+        }catch (Error error){
+            log.error("",error);
+        }
+
+        return classSession;
     }
 
     @Override
     public ClassSession FindClassSessionByName(String name) {
-        return classSessionRepository.findByClassName(name);
+
+
+        ClassSession classSession = classSessionRepository.findByClassName(name);
+
+        try{
+            if(classSession == null){
+                log.info("Object not found");
+            }
+        }catch (Error error){
+            log.error("",error);
+        }
+
+        return classSession;
     }
 
     @Override
     public ClassSession AddNewClassSession(ClassSession classSession) {
-        return classSessionRepository.save(classSession);
+
+      ClassSession classSession1 = classSessionRepository.findByClassName(classSession.getClassName());
+
+      try{
+
+      }catch (Error error){
+
+      }
+
+      return classSessionRepository.save(classSession);
     }
 
     @Override
