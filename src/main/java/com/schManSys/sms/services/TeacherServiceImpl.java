@@ -26,14 +26,6 @@ public class TeacherServiceImpl implements TeacherService{
     @Override
     public Teacher SaveNewTeacher(Teacher teacher) {
 
-        try {
-            if(teacher == null){
-                throw new NullPointerException();
-            }else{log.info("Object is not empty.");}
-        }catch (Error error){
-            log.error("Object is empty :",error);
-        }
-
         return teacherRepository.save(teacher);
     }
 

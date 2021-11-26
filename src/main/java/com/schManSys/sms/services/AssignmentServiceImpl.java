@@ -34,7 +34,14 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public Assignment EditAssignment(Long assignmentId, Assignment assignment) {
-        return null;
+
+        Assignment assignment1 = assignmentRepository.findByAssignmentID(assignmentId);
+
+        assignment1.setAssignmentNme(assignment.getAssignmentNme());
+        assignment1.setDueDate(assignment.getDueDate());
+        assignment1.setAssignment(assignment.getAssignment());
+
+        return assignment1;
     }
 
     @Override

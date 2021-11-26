@@ -22,44 +22,19 @@ public class ClassSessionServiceImpl implements ClassSessionService{
 
         ClassSession classSession = classSessionRepository.findByClassSessionId(classSessionId);
 
-        try{
-            if(classSession == null){
-                log.info("Object not found");
-            }
-        }catch (Error error){
-            log.error("",error);
-        }
-
         return classSession;
     }
 
     @Override
     public ClassSession FindClassSessionByName(String name) {
 
-
         ClassSession classSession = classSessionRepository.findByClassName(name);
-
-        try{
-            if(classSession == null){
-                log.info("Object not found");
-            }
-        }catch (Error error){
-            log.error("",error);
-        }
 
         return classSession;
     }
 
     @Override
     public ClassSession AddNewClassSession(ClassSession classSession) {
-
-      ClassSession classSession1 = classSessionRepository.findByClassName(classSession.getClassName());
-
-      try{
-
-      }catch (Error error){
-
-      }
 
       return classSessionRepository.save(classSession);
     }

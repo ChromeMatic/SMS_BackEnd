@@ -17,8 +17,6 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long assignmentID;
     private String assignmentNme;
-    @OneToOne
-    private Course course;
     private String DueDate;
     private String assignment;
 }

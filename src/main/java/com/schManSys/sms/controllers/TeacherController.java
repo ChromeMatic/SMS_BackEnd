@@ -1,8 +1,7 @@
 package com.schManSys.sms.controllers;
 
-import com.schManSys.sms.models.Course;
-import com.schManSys.sms.models.Student;
-import com.schManSys.sms.models.Teacher;
+import com.schManSys.sms.exception.ApiRequestException;
+import com.schManSys.sms.models.*;
 import com.schManSys.sms.services.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,7 @@ public class TeacherController {
     private final StudentService studentService;
     private final CourseService  courseService;
     private final AssignmentService assignmentService;
-    private final ClassSessionService classSessionService;
+    private final StudentGradeService studentGradeService;
 
     @GetMapping("/")
     public List<Teacher> getTeachers(){
@@ -34,15 +33,12 @@ public class TeacherController {
 
         Student student = studentService.FindStudentById(studentId);
 
-        try {
-            if(student == null){
-             return ResponseEntity.notFound().build();
-            }
-        }catch (Error error){
-            log.error("Student Object is empty",error);
+        if( student == null){
+            throw new ApiRequestException("Student Does not exist.");
+        }else {
+            return ResponseEntity.ok().body(student);
         }
 
-        return ResponseEntity.ok().body(student);
     }
 
     @GetMapping("/getStudent/{studentName}")
@@ -50,15 +46,12 @@ public class TeacherController {
 
         Student student = studentService.FindStudentByName(studentName);
 
-        try{
-            if (student == null){
-                return ResponseEntity.notFound().build();
-            }
-        }catch (Error error){
-            log.error("Student Entity not found :",error);
+        if( student == null){
+            throw new ApiRequestException("Student Does not exist.");
+        }else{
+            return ResponseEntity.ok().body(student);
         }
 
-        return ResponseEntity.ok().body(student);
     }
 
     @GetMapping("/getCourses")
@@ -75,10 +68,31 @@ public class TeacherController {
     }
 
 
+    @PostMapping("/AddAssignment")
+    public ResponseEntity<Assignment> AddAssignment(@RequestBody Assignment assignment){
+
+        Assignment assignment1 = assignmentService.FindByAssignmentName(assignment.getAssignmentNme());
+
+        if( assignment1 != null){
+           throw new ApiRequestException("Assignment Already exist");
+        }else{
+            return ResponseEntity.ok().body(assignmentService.AddNewAssignment(assignment));
+        }
+    }
+
+
     @PostMapping("/EditReport/{studentId}")
     public ResponseEntity<Student> editStudentReport(@PathVariable(value = "studentId") Long studentId){
-          return null;
-     }
+
+        Student student = studentService.FindStudentById(studentId);
+
+        if( student == null){
+            return ResponseEntity.notFound().build();
+        }else{
+            return  ResponseEntity.ok().body(student);
+        }
+
+    }
 
 
 }

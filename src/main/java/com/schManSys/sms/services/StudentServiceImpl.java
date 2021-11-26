@@ -24,34 +24,13 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public Student AddNewStudent(Student student) {
-
-       try{
-           if (student == null){
-               log.error("Error");
-           }else{
-               log.info("Object is full");
-           }
-       }catch (Error error){
-           log.error("Object is empty :",error);
-       }
-
         return studentRepository.save(student);
     }
 
     @Override
     public Student FindStudentById(Long studentId) {
 
-       Student student = studentRepository.findByStudentId(studentId);
-
-       try {
-           if( student == null){
-               log.error("Student not found in DB");
-           }else {
-               log.info("Student named: {} found in DB",student.getStudentName());
-           }
-       }catch (Error error){
-           log.error("Student object is empty.");
-       }
+        Student student = studentRepository.findByStudentId(studentId);
 
         return student;
     }
@@ -72,35 +51,15 @@ public class StudentServiceImpl implements StudentService{
         Student student = studentRepository.findByStudentId(studentId);
         Course course1 = courseRepository.findByCourseName(course);
 
-        try {
-
-            if (student != null && course1 !=null){
-                student.getCourses().add(course1);
-            }
-
-        }catch (Error error){
-            log.error("Could not find student or course name. ",error);
-        }
+        student.getCourses().add(course1);
 
         return student;
-
     }
 
     @Override
     public List<Course> getStudentCourses(Long studentId) {
 
         Student student = studentRepository.findByStudentId(studentId);
-
-        try{
-            //Check If student exist
-            if(student.getCourses() == null){
-                log.error("Student not found in DB");
-            }else{
-                log.info("Student named: {} found in DB",student.getStudentName());
-            }
-        }catch (Error error){
-            log.error("Student not founded in DB :",error);
-        }
 
         return (List<Course>) student.getCourses();
     }

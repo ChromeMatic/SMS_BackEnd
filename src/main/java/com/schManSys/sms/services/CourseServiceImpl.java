@@ -28,14 +28,6 @@ public class CourseServiceImpl implements  CourseService{
 
         Course course = courseRepository.findByCourseId(courseId);
 
-        try{
-            if (course == null){
-                log.error("Course could not be found");
-            }else { log.info("Course exist");}
-        }catch(Error error){
-            log.error("Course does not exist",error);
-        }
-
         return course;
     }
 
@@ -44,15 +36,6 @@ public class CourseServiceImpl implements  CourseService{
 
         Course course1 = courseRepository.findByCourseName(course);
 
-         try{
-
-             if (course1 == null){
-                 log.error("Course could not be found");
-             }else { log.info("Course exist");}
-
-         }catch(Error error){
-             log.error("Course does not exist",error);
-         }
 
         return course1;
     }
@@ -62,20 +45,12 @@ public class CourseServiceImpl implements  CourseService{
 
         Course course2 = courseRepository.findByCourseId(courseId);
 
-        try {
+        course2.setCourseName(course.getCourseName());
+        course2.setTeacherName(course.getTeacherName());
+        course2.setTimeAndDate(course.getTimeAndDate());
+        course2.setCourseResources(course.getCourseResources());
 
-            if (course2 != null){
-                course2.setCourseName(course.getCourseName());
-                course2.setTeacherName(course.getTeacherName());
-                course2.setTimeAndDate(course.getTimeAndDate());
-                course2.setCourseResources(course.getCourseResources());
-            }
-
-        }catch (Error error){
-            log.error("Course not founded in DB",error);
-        }
-
-        return course;
+        return course2;
     }
 
     @Override

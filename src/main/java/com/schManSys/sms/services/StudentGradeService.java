@@ -1,8 +1,6 @@
 package com.schManSys.sms.services;
 
-import com.schManSys.sms.models.Student;
 import com.schManSys.sms.models.StudentGrades;
-import java.util.Collection;
 import java.util.List;
 
 public interface StudentGradeService {

@@ -55,16 +55,7 @@ public class SchoolServiceImpl implements SchoolService{
         Student student1 = studentRepository.findByStudentId(studentId);
         School school = schoolRepository.findBySchoolName(schoolName);
 
-        try {
-            if(student1 != null || school != null){
-               log.info("Student and School exist");
-               school.getStudents().add(student1);
-            }else {
-                throw new NullPointerException();
-            }
-        }catch (Error error){
-           log.error("Student dos not exist :",error);
-        }
+        school.getStudents().add(student1);
 
         return school;
     }

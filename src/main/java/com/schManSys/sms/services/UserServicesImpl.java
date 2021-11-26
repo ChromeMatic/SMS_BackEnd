@@ -34,15 +34,6 @@ public class UserServicesImpl implements UserService, UserDetailsService {
 
         AppUser user = userRepository.findByUsername(username);
 
-        //Checks to see if username exist.
-        if(user == null){
-            log.error("User not found in DB");
-            throw new UsernameNotFoundException("User not found in DB");
-        }else{
-            log.info("User found in DB: {}",username);
-
-        }
-
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(roles -> {
             authorities.add(new SimpleGrantedAuthority(roles.getRoleName()));
@@ -66,6 +57,11 @@ public class UserServicesImpl implements UserService, UserDetailsService {
     public Roles AddNewRole(Roles roles) {
         log.info("Add new Role to DB.");
         return roleRepository.save(roles);
+    }
+
+    @Override
+    public Roles FindRoleByName(String roleName) {
+        return roleRepository.findByRoleName(roleName);
     }
 
     @Override
