@@ -34,6 +34,13 @@ public class UserServicesImpl implements UserService, UserDetailsService {
 
         AppUser user = userRepository.findByUsername(username);
 
+        if(user == null){
+            log.error("Cannot find user in database.");
+            throw new UsernameNotFoundException("Cannot find user in database.");
+        }else{
+            log.info("User found in DB: {}",username);
+        }
+
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(roles -> {
             authorities.add(new SimpleGrantedAuthority(roles.getRoleName()));

@@ -93,6 +93,19 @@ public class ManagementController {
         }
     }
 
+    @GetMapping("/schoolName/{schoolName}")
+    public  ResponseEntity<School> GetSchoolByName(@PathVariable(value = "schoolName")String schoolName){
+
+        School school = schoolService.FindSchoolByName(schoolName);
+
+        if(school == null){
+            throw new ApiRequestException("School not found");
+        }else{
+         return ResponseEntity.ok().body(school);
+        }
+
+    }
+
     @PostMapping("/user/save")
     public ResponseEntity<AppUser>SaveUser(@RequestBody AppUser user){
 

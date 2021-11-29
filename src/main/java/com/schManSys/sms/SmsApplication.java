@@ -15,5 +15,4 @@ public class SmsApplication {
 
 	@Bean
 	PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
-
 }
