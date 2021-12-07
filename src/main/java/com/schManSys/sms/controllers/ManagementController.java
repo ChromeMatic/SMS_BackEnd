@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/v1/management")
@@ -263,6 +263,8 @@ public class ManagementController {
            return ResponseEntity.ok().body(courseService.EditCourse(courseId,course));
        }
     }
+
+
 }
 
 @Data
