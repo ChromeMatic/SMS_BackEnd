@@ -20,7 +20,7 @@ import java.util.*;
 @RequestMapping("api/v1/management")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin
+@CrossOrigin("*")
 public class ManagementController {
 
     private final UserService userService;
@@ -28,8 +28,6 @@ public class ManagementController {
     private final SchoolService schoolService;
     private final CourseService courseService;
 
-    // hasRole('ROLE'), hasAnyRole('ROLE'), hasAuthority('permission')
-    // hasAuthority('permission) @PreAuthorize("hasRole('ROLE_ADMIN')")
 
     @GetMapping("/users")
     public ResponseEntity<List<AppUser>>getUser(){
@@ -104,6 +102,18 @@ public class ManagementController {
          return ResponseEntity.ok().body(school);
         }
 
+    }
+
+    @GetMapping("/schoolStudents/{schoolName}")
+    public ResponseEntity<Collection<Student>> GetStudentsBySchoolName(@PathVariable(value = "schoolName")String schoolName){
+
+        School school = schoolService.FindSchoolByName(schoolName);
+
+        if(school == null){
+            throw new ApiRequestException("School not found.");
+        }else{
+            return ResponseEntity.ok().body(school.getStudents());
+        }
     }
 
     @PostMapping("/user/save")

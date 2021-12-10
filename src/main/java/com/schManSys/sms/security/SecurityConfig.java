@@ -10,10 +10,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
 
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.*;
@@ -42,14 +43,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
         http.csrf().disable();
-        http.cors().disable();
+        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
         http.sessionManagement()
                 .sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/api/login/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/login/**","/api/RefreshToken").permitAll();
         http.authorizeRequests().antMatchers(GET,"api/s1/**")
                         .hasAnyAuthority("ROLE_STUDENT");
         http.authorizeRequests().antMatchers(GET,"api/v1/management/**")
                 .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(GET,"api/v1/teacher/**")
+                        .hasAnyAuthority("ROLE_ADMIN","ROLE_TEACHER");
+        http.authorizeRequests().antMatchers(POST,"api/v1/teacher/**")
+                .hasAnyAuthority("ROLE_ADMIN","ROLE_TEACHER");
+        http.authorizeRequests().antMatchers(PUT,"api/v1/teacher/**")
+                .hasAnyAuthority("ROLE_ADMIN","ROLE_TEACHER");
         http.authorizeRequests().antMatchers(POST,"api/v1/management/**")
                         .hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(PUT,"api/v1/management/**")

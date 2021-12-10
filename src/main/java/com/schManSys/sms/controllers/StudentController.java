@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 
-@CrossOrigin
+@CrossOrigin("*")
 @RestController
 @RequestMapping("api/s1")
 @RequiredArgsConstructor
