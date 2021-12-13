@@ -28,22 +28,25 @@ public class ManagementController {
     private final SchoolService schoolService;
     private final CourseService courseService;
 
-
+    // Get all users in the database
     @GetMapping("/users")
     public ResponseEntity<List<AppUser>>getUser(){
         return ResponseEntity.ok().body(userService.getUser());
     }
 
+    // Get all Students in the database
     @GetMapping("/students")
     public ResponseEntity<List<Student>> getStudents(){
         return ResponseEntity.ok().body(studentService.getStudents());
     }
 
+    // Get all Schools stored in the database
     @GetMapping("/schools")
     public ResponseEntity<List<School>> getSchools(){
         return ResponseEntity.ok().body(schoolService.getSchools());
     }
 
+   // Get student by ID form  the database
    @GetMapping("/student/{studentID}")
    public ResponseEntity<Student>getStudentByID(@PathVariable(value = "studentID")Long studentID){
 
@@ -61,6 +64,7 @@ public class ManagementController {
        }
    }
 
+    // Get user by ID form the database
     @GetMapping("/user/{userId}")
     public ResponseEntity<AppUser> getUserById(@PathVariable(value = "userId") Long userId){
 
@@ -79,6 +83,7 @@ public class ManagementController {
         }
     }
 
+    // Get all users in the database
     @GetMapping("/school/{schoolId}")
     public ResponseEntity<School> GetSchoolById(@PathVariable(value = "schoolId")Long schoolId){
 
@@ -91,6 +96,7 @@ public class ManagementController {
         }
     }
 
+    // Get a school by name stored in the database
     @GetMapping("/schoolName/{schoolName}")
     public  ResponseEntity<School> GetSchoolByName(@PathVariable(value = "schoolName")String schoolName){
 
@@ -182,8 +188,27 @@ public class ManagementController {
              return ResponseEntity.created(uri).body(studentService.AddNewStudent(student));
          }
        }
+    }
 
+    @PostMapping("/EditStudent/{studentId}")
+    ResponseEntity<?> EditStudent(@PathVariable(value = "studentId")Long studentId,
+                                  @RequestBody Student student){
 
+        Student student1 = studentService.FindStudentById(studentId);
+
+        if(student1 == null){
+            throw new ApiRequestException("Student does not exit.");
+        }else{
+
+            URI uri = URI.create(ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/EditStudent")
+                    .toUriString());
+
+            studentService.EditStudent(student,studentId);
+
+            return ResponseEntity.created(uri).build();
+        }
     }
 
 
@@ -247,6 +272,19 @@ public class ManagementController {
       }
 
     }
+    @PostMapping("/school/AddStudent/{school}/{student}")
+    public ResponseEntity<School> SaveStudentToSchoolByName(@PathVariable(value = "school")String school,
+                                                            @PathVariable(value = "student")String student){
+
+        School school1 = schoolService.FindSchoolByName(school);
+        Student student1 = studentService.FindStudentByName(student);
+
+        if(school1 == null || student1 == null){
+            throw new ApiRequestException("Student and school does exist.");
+        }else {
+         return ResponseEntity.ok().body(schoolService.AddStuntByName(student,school));
+        }
+    }
 
     @PutMapping("/student/AddCourse/{studentID}/{course}")
     public ResponseEntity<Student> GetCourseToStudent(@PathVariable(value = "studentID") Long studentID,
@@ -273,7 +311,6 @@ public class ManagementController {
            return ResponseEntity.ok().body(courseService.EditCourse(courseId,course));
        }
     }
-
 
 }
 

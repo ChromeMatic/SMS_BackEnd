@@ -14,6 +14,7 @@ public interface SchoolService {
     School EditSchoolById(Long schoolId, School school);
     void EditSchoolByName(School schoolName, School school);
     School AddNewStudents(Long studentId,String schoolName);
+    School AddStuntByName(String student,String schoolName);
     void AddNewTeacher(Teacher teacher);
     List<School> getSchools();
 }

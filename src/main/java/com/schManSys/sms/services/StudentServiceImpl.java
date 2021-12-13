@@ -41,6 +41,14 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    public void EditStudent(Student student, Long studentId) {
+
+        Student student1 = studentRepository.findByStudentId(studentId);
+        student1.setStudentName(student.getStudentName());
+        student1.setDob(student.getDob());
+    }
+
+    @Override
     public Course AddNewCourse(Course course) {
         return courseRepository.save(course);
     }

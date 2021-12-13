@@ -13,6 +13,7 @@ public interface StudentService {
     Student AddNewStudent (Student student);
     Student FindStudentById (Long studentId);
     Student FindStudentByName (String studentName);
+    void EditStudent(Student student,Long studentId);
     Course AddNewCourse(Course course);
     Student   AddCourseToStudent (Long studentId,String course);
     List<Course> getStudentCourses(Long studentId);
