@@ -15,3 +15,25 @@ The diagram above shows the ERD
 ![image](https://user-images.githubusercontent.com/61952310/159061201-5140e246-5e29-4dbc-84dd-5f8e3a95c46a.png)
 
 The diagram above shows the Data flow diagram
+
+
+Systems Requirements
+
+
+Web browsers supported:
+
+-	Firefox, Chrome, Microsoft Edge, Safari, Opera, Brave 
+
+Unsupported Web browser
+
+-	Internet Explorer
+
+Software  Requirements:
+-	Node.js
+-	Git Bash
+-	Java JDK version 10-17 
+
+Equipment :
+-	Web server or Cloud base services like AWS or google cloud service.
+-	Desktop PC , Laptop or any smart device.
+
