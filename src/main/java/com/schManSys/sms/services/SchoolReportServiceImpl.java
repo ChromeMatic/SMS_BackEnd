@@ -7,7 +7,6 @@ import com.schManSys.sms.repository.SchoolRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import static java.util.Objects.isNull;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -43,10 +42,6 @@ public class SchoolReportServiceImpl implements SchoolReportService {
     public void EditSchoolReport(Long schoolId, SchoolReport schoolReport) {
 
         School school = schoolRepository.findBySchoolId(schoolId);
-
-        if(isNull(school)){
-            log.error("school does not exist");
-        }
 
         school.getSchoolReport().add(schoolReport);
     }

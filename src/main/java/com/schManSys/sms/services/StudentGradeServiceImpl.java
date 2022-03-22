@@ -32,25 +32,13 @@ public class StudentGradeServiceImpl implements StudentGradeService{
         Student student =  studentRepository.findByStudentId(studentId);
         StudentGrades grades =  studentGradesRepository.findByStudentGradeId(studentGrades.getStudentGradeId());
 
-        if(isNull(student) && isNull(grades) ){
-          log.error("Student does not exist");
-        }
-
         student.getGradesSet().add(grades);
-
     }
 
     @Override
     public StudentGrades FindById(Long studentGradeId) {
 
         StudentGrades grades = studentGradesRepository.findByStudentGradeId(studentGradeId);
-
-        if(grades == null){
-            log.error("Student grade not found in DB");
-            throw new UsernameNotFoundException("Student grade not found in DB");
-        }else{
-            log.info("Student Grades found");
-        }
 
         return grades;
     }
@@ -59,11 +47,6 @@ public class StudentGradeServiceImpl implements StudentGradeService{
     public List<StudentGrades> FindByStudentId(Long studentId) {
 
         Student student = studentRepository.findByStudentId(studentId);
-
-        if(student == null){
-            log.error("Student not found in DB");
-            throw new UsernameNotFoundException("Student not found in DB");
-        }else{log.info("Student Found! ");}
 
         List<StudentGrades> gradesList = student.getGradesSet();
 
@@ -74,11 +57,6 @@ public class StudentGradeServiceImpl implements StudentGradeService{
     public List<StudentGrades> FindStudentGradeByStudentName(String studentName) {
 
         Student student = studentRepository.findByStudentName(studentName);
-
-        if(isNull(student)){
-          log.info("Student named: {}, does not exist.",studentName);
-            throw new UsernameNotFoundException("Student not found in DB");
-        }
 
         List<StudentGrades> grades = student.getGradesSet();
 

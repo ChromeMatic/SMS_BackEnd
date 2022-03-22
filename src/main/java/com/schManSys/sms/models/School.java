@@ -23,5 +23,9 @@ public class School {
     private String schoolName;
     private String schoolAddress;
     @OneToMany
+    private Collection<Student> Students =  new ArrayList<>();
+    @OneToMany
+    private  Collection<Teacher> Teachers = new ArrayList<>();
+    @OneToMany
     private Collection<SchoolReport> schoolReport = new ArrayList<>();
 }

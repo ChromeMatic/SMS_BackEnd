@@ -1,6 +1,7 @@
 package com.schManSys.sms.security;
 
 import com.schManSys.sms.filters.CustomAuthenticationFilter;
+import com.schManSys.sms.filters.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +10,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+
+import static org.springframework.http.HttpMethod.*;
+import static org.springframework.security.config.http.SessionCreationPolicy.*;
 
 @Configuration
 @EnableWebSecurity
@@ -26,18 +32,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
 
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(userDetailsService)
+            .passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable();
-        http.cors().disable();
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
+        customAuthenticationFilter.setFilterProcessesUrl("/api/login");
+
+        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
         http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().anyRequest().permitAll();
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+                .sessionCreationPolicy(STATELESS);
+        http.authorizeRequests().antMatchers("/api/login/**","/api/RefreshToken").permitAll();
+        http.authorizeRequests().antMatchers(GET,"api/s1/**")
+                        .hasAnyAuthority("ROLE_STUDENT");
+        http.authorizeRequests().antMatchers(GET,"api/v1/management/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(GET,"api/v1/teacher/**")
+                        .hasAnyAuthority("ROLE_ADMIN","ROLE_TEACHER");
+        http.authorizeRequests().antMatchers(POST,"api/v1/teacher/**")
+                .hasAnyAuthority("ROLE_ADMIN","ROLE_TEACHER");
+        http.authorizeRequests().antMatchers(PUT,"api/v1/teacher/**")
+                .hasAnyAuthority("ROLE_ADMIN","ROLE_TEACHER");
+        http.authorizeRequests().antMatchers(POST,"api/v1/management/**")
+                        .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(PUT,"api/v1/management/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().anyRequest().authenticated();
+        http.addFilter(customAuthenticationFilter);
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

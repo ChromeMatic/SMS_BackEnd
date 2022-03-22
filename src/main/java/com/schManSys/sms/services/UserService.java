@@ -9,6 +9,7 @@ public interface UserService {
 
     AppUser AddNewUser (AppUser user);
     Roles AddNewRole (Roles roles);
+    Roles FindRoleByName(String roleName);
     void AddRoleToUser (String username, String roleName);
     AppUser getUserById (Long userId);
     AppUser getUserByUsername (String username);

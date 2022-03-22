@@ -13,8 +13,9 @@ public interface StudentService {
     Student AddNewStudent (Student student);
     Student FindStudentById (Long studentId);
     Student FindStudentByName (String studentName);
+    void EditStudent(Student student,Long studentId);
     Course AddNewCourse(Course course);
-    void   AddCourseToStudent (Long studentId,Course course);
+    Student   AddCourseToStudent (Long studentId,String course);
     List<Course> getStudentCourses(Long studentId);
     List<CourseResources> getCourseResources(String s);
     StudentReport getStudentReport (Student studentId);

@@ -24,34 +24,13 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public Student AddNewStudent(Student student) {
-
-       try{
-           if (student == null){
-               log.error("Error");
-           }else{
-               log.info("Object is full");
-           }
-       }catch (Error error){
-           log.error("Object is empty :",error);
-       }
-
         return studentRepository.save(student);
     }
 
     @Override
     public Student FindStudentById(Long studentId) {
 
-       Student student = studentRepository.findByStudentId(studentId);
-
-       try {
-           if( student == null){
-               log.error("Student not found in DB");
-           }else {
-               log.info("Student named: {} found in DB",student.getStudentName());
-           }
-       }catch (Error error){
-           log.error("Student object is empty.");
-       }
+        Student student = studentRepository.findByStudentId(studentId);
 
         return student;
     }
@@ -62,42 +41,33 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    public void EditStudent(Student student, Long studentId) {
+
+        Student student1 = studentRepository.findByStudentId(studentId);
+        student1.setStudentName(student.getStudentName());
+        student1.setDob(student.getDob());
+    }
+
+    @Override
     public Course AddNewCourse(Course course) {
         return courseRepository.save(course);
     }
 
     @Override
-    public void AddCourseToStudent(Long studentId,Course course) {
+    public Student AddCourseToStudent(Long studentId,String course) {
 
         Student student = studentRepository.findByStudentId(studentId);
+        Course course1 = courseRepository.findByCourseName(course);
 
-        try {
+        student.getCourses().add(course1);
 
-            if (student != null){
-                student.getCourses().add(course);
-            }
-
-        }catch (Error error){
-            log.error("Could not find student",error);
-        }
-
+        return student;
     }
 
     @Override
     public List<Course> getStudentCourses(Long studentId) {
 
         Student student = studentRepository.findByStudentId(studentId);
-
-        try{
-            //Check If student exist
-            if(student.getCourses() == null){
-                log.error("Student not found in DB");
-            }else{
-                log.info("Student named: {} found in DB",student.getStudentName());
-            }
-        }catch (Error error){
-            log.error("Student not founded in DB :",error);
-        }
 
         return (List<Course>) student.getCourses();
     }
